@@ -1,0 +1,55 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <!-- ViewPager轮播控件的容器 -->
+
+    <FrameLayout
+        android:id="@+id/flyt_container"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:orientation="vertical" >
+
+        <!-- 轮播页 -->
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp_viewpager"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_gravity="bottom"
+            android:background="#33000000"
+            android:gravity="center_vertical" >
+
+            <!-- 轮播页标题 -->
+
+            <TextView
+                android:id="@+id/tv_banner_titile"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="25dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:text="" />
+
+            <!-- 轮播页底部小点 -->
+
+            <LinearLayout
+                android:id="@+id/llyt_viewgroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:gravity="bottom"
+                android:orientation="horizontal" >
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+
+</LinearLayout><!-- From: file:/C:/AndroidStudioProjects/SuperViewPager/app/src/main/res/layout/activity_banner.xml -->
