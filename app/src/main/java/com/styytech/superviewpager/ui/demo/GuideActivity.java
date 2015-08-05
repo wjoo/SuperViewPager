@@ -3,7 +3,8 @@ package com.styytech.superviewpager.ui.demo;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.View;
+import android.support.v4.view.ViewPager;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,29 +28,16 @@ public class GuideActivity extends Activity {
      * 应用上下文
      */
     private Context context;
-    private View rootView;
+    private ViewGroup llyt_viewgroup;
+    private ViewPager vp_viewpager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);// 设置界面无标题
-        /**
-         * 如果指定的子view已经有一个父view。<br>
-         * 你首先必须让子view 脱离 父view 关系,及父view.removeview(子view)。
-         */
-//        if (null != rootView) {
-//            ViewGroup parent = (ViewGroup) rootView.getParent();
-//            if (null != parent) {
-//                parent.removeView(rootView);
-//            }
-//        } else {
-//            rootView = View.inflate(this, R.layout.activity_guide, null);
-//        }
-        View rootView = View.inflate(this, R.layout.activity_guide, null);
-        setContentView(rootView);
+        setContentView(R.layout.activity_guide);
         initView();
-        BannerView bannerView = new BannerView(context, rootView,
-                R.id.llyt_viewgroup, R.id.vp_viewpager);
+        BannerView bannerView = new BannerView(context,llyt_viewgroup, vp_viewpager);
         setBannerView(bannerView);
     }
 
@@ -65,6 +53,8 @@ public class GuideActivity extends Activity {
      * 找控件（初始化控件）
      */
     private void findView() {
+        llyt_viewgroup = (ViewGroup) findViewById(R.id.llyt_viewgroup);
+        vp_viewpager = (ViewPager) findViewById(R.id.vp_viewpager);
     }
 
     /**

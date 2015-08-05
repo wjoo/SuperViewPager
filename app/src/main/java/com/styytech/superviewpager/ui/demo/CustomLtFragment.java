@@ -33,19 +33,6 @@ public class CustomLtFragment extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
-        /**
-         * 如果指定的子view已经有一个父view。<br>
-         * 你首先必须让子view 脱离 父view 关系,及父view.removeview(子view)。
-         */
-//		if (null != rootView) {
-//			ViewGroup parent = (ViewGroup) rootView.getParent();
-//			if (null != parent) {
-//				parent.removeView(rootView);
-//			}
-//		} else {
-//			rootView = View.inflate(this, R.layout.fragment_banner_customlyt,
-//					null);
-//		}
         View rootView = View.inflate(this, R.layout.fragment_banner_customlyt,
                 null);
         setContentView(rootView);

@@ -42,18 +42,6 @@ public class BannerActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);// 设置界面无标题
-        /**
-         * 如果指定的子view已经有一个父view。<br>
-         * 你首先必须让子view 脱离 父view 关系,及父view.removeview(子view)。
-         */
-//        if (null != rootView) {
-//            ViewGroup parent = (ViewGroup) rootView.getParent();
-//            if (null != parent) {
-//                parent.removeView(rootView);
-//            }
-//        } else {
-//            rootView = View.inflate(this, R.layout.activity_banner, null);
-//        }
         View rootView = View.inflate(this, R.layout.activity_banner, null);
         setContentView(rootView);
         initView();
