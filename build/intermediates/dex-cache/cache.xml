@@ -2,18 +2,18 @@
 <items version="2" >
 
     <item
-        jar="C:\AndroidStudioProjects\SuperViewPager\app\libs\universal-image-loader-1.9.3.jar"
-        jumboMode="false"
-        revision="20.0.0"
-        sha1="a85588bec3e2c4584d593d3f15df1677321bca72">
-        <dex dex="C:\AndroidStudioProjects\SuperViewPager\app\build\intermediates\pre-dexed\debug\universal-image-loader-1.9.3-ad066230d0d4a746bf47605f53defd47b35880ff.jar" />
-    </item>
-    <item
         jar="C:\android-sdk\sdk\extras\android\m2repository\com\android\support\support-v4\19.1.0\support-v4-19.1.0.jar"
         jumboMode="false"
         revision="20.0.0"
         sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67">
-        <dex dex="C:\AndroidStudioProjects\SuperViewPager\app\build\intermediates\pre-dexed\debug\support-v4-19.1.0-801e663a75307c74364ca6338c8a4893d53fdd9e.jar" />
+        <dex dex="C:\AndroidMaster\SuperViewPager\app\build\intermediates\pre-dexed\debug\support-v4-19.1.0-801e663a75307c74364ca6338c8a4893d53fdd9e.jar" />
+    </item>
+    <item
+        jar="C:\AndroidMaster\SuperViewPager\app\libs\universal-image-loader-1.9.3.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="a85588bec3e2c4584d593d3f15df1677321bca72">
+        <dex dex="C:\AndroidMaster\SuperViewPager\app\build\intermediates\pre-dexed\debug\universal-image-loader-1.9.3-e5bfe4e51144bc93dd00572934d1407f2b6a3b44.jar" />
     </item>
 
 </items>
