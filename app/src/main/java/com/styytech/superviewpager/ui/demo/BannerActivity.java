@@ -1,15 +1,11 @@
 package com.styytech.superviewpager.ui.demo;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,6 +16,9 @@ import com.styytech.superviewpager.R;
 import com.styytech.superviewpager.widge.viewpagers.BannerView;
 import com.styytech.superviewpager.widge.viewpagers.BannerView.IBViewCurrentPageListener;
 import com.styytech.superviewpager.widge.viewpagers.BannerView.IBViewSetPageView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 描述：首頁轮播界面DEMO
@@ -121,7 +120,7 @@ public class BannerActivity extends Activity {
                     @Override
                     public void onClick(View v) {
                         Log.i("123", "" + positioncur);
-                        Toast.makeText(context, positioncur + ":页被点击了", 0)
+                        Toast.makeText(context, positioncur + ":页被点击了", Toast.LENGTH_SHORT)
                                 .show();
                     }
                 });

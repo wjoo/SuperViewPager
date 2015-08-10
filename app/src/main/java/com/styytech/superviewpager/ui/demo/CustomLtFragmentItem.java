@@ -114,7 +114,7 @@ public class CustomLtFragmentItem extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(context, "你点击了大大LOGO", 0).show();
+				Toast.makeText(context, "你点击了大大LOGO", Toast.LENGTH_SHORT).show();
 			}
 		});
 		// 布局监听

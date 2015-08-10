@@ -105,7 +105,7 @@ public class CustomLtFragment extends FragmentActivity {
                     public void onClick(View v) {
 
                         Log.i("123", "点击了" + positioncur);
-                        Toast.makeText(context, positioncur + ":页被点击了", 0)
+                        Toast.makeText(context, positioncur + ":页被点击了", Toast.LENGTH_SHORT)
                                 .show();
                     }
                 });
