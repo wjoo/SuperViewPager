@@ -32,11 +32,11 @@ public class BannerActivity extends Activity {
      * 应用上下文
      */
     private Context context;
-    /**
-     * 轮播图标题
-     */
+    /*轮播整体布局*/
     private FrameLayout flyt_container;
+    /*轮播图标题*/
     private TextView tv_banner_titile;
+    /*界面整体布局*/
     private View rootView;
 
     @Override
