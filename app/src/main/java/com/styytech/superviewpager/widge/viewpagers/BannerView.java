@@ -1,9 +1,7 @@
 package com.styytech.superviewpager.widge.viewpagers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Handler;
@@ -16,6 +14,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -24,13 +24,17 @@ import android.widget.Toast;
 
 import com.styytech.superviewpager.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 轮播页控件的封装类<br>
  * 1.引导页<br>
  * 2.首页轮播<br>
  * 3.自定义布局轮播<br>
  * 注：演示DEMO:<br>
- *     https://git.oschina.net/wjoo/SuperViewPager.git
+ * https://git.oschina.net/wjoo/SuperViewPager.git
+ *
  * @author 鱼鱼科技
  */
 public class BannerView {
@@ -731,6 +735,59 @@ public class BannerView {
     }
 
     /**
+     * 设置轮播图的宽高比；
+     * 注：默认宽度,高度为用户布局文件设置的宽高度
+     *
+     * @param flyt_container 轮播布局容器
+     * @param scale          轮播图的宽高比
+     */
+    public void setAspectRatio(View flyt_container, int scale) {
+        //获取屏幕宽度
+        int widthPx = getWindowsWidth();
+        //实例布局参数
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, widthPx /scale);
+        //设置布局参数
+        flyt_container.setLayoutParams(params);
+    }
+    /**
+     * 设置轮播图的宽高比；
+     * 注：margindp，是轮播图布局的左右外边距（或者内边距）的和，且默认是左右对称的.
+     *
+     * @param flyt_container 轮播布局容器
+     * @param scale          轮播图的宽高比
+     * @param margindp       轮播图布局容器的横向外/内边距总和
+     */
+    public void setAspectRatio(View flyt_container, int scale,int margindp) {
+        int marginPx = dip2px(margindp);
+        //轮播图布局的实际宽度
+        int widthPx = getWindowsWidth() - marginPx;
+        //实例布局参数
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, widthPx /scale);
+        params.setMargins(marginPx/2,0,marginPx/2,0);
+        //设置布局参数
+        flyt_container.setLayoutParams(params);
+    }
+
+    /**
+     * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
+     */
+    private int dip2px(float dpValue) {
+        DisplayMetrics metrics = mContext.getResources().getDisplayMetrics();
+        final float scale = metrics.density;
+        return (int) (dpValue * scale + 0.5f);
+//		return dpValue * (metrics.densityDpi / 160f);
+    }
+
+    /** 获取屏幕宽度 */
+    private int getWindowsWidth() {
+        DisplayMetrics dm = new DisplayMetrics();
+        ((Activity)mContext).getWindowManager().getDefaultDisplay().getMetrics(dm);
+        return dm.widthPixels;
+    }
+
+    /**
      * 设置轮播页的图片列表集
      *
      * @param ibAddPageView
@@ -848,4 +905,5 @@ public class BannerView {
             Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
         }
     }
+
 }

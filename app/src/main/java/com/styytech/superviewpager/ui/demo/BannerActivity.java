@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,7 @@ public class BannerActivity extends Activity {
     /**
      * 轮播图标题
      */
+    private FrameLayout flyt_container;
     private TextView tv_banner_titile;
     private View rootView;
 
@@ -62,6 +64,7 @@ public class BannerActivity extends Activity {
      */
     private void findView() {
         tv_banner_titile = (TextView) findViewById(R.id.tv_banner_titile);
+        flyt_container = (FrameLayout) findViewById(R.id.flyt_container);
     }
 
     /**
@@ -70,6 +73,8 @@ public class BannerActivity extends Activity {
      * @param bannerView 轮播图对象
      */
     private void setBannerView(BannerView bannerView) {
+        // 设置轮播图宽高比
+        bannerView.setAspectRatio(flyt_container,2/1);
         // 是否需要循环
         // bannerView.setLoop(true);
         // 设置是否自动轮播
