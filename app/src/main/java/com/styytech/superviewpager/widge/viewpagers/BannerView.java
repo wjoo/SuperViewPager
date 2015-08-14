@@ -109,13 +109,28 @@ public class BannerView {
 
     /**
      * 实例化一个轮播视图实例 <br>
+     * 其中viewPagerId在此被初始化<br>
+     * 注：fragment_banner.xml,fragment_guide.xml 用户需要在自己的布局中include即可<br>
+     * &emsp;&emsp;也可以针对这两个布局做根据自己的需求做适当的修改
+     *
+     * @param context     应用上下文
+     * @param viewPagerId 轮播图控件布局id
+     */
+    public BannerView(Context context, View rootView, int viewPagerId) {
+        this.mContext = context;
+        this.mRootView = rootView;
+        this.mViewPagerId = viewPagerId;
+    }
+
+    /**
+     * 实例化一个轮播视图实例 <br>
      * 其中viewGroup,viewPager在外面初始化<br>
      * 注：fragment_banner.xml,fragment_guide.xml 用户需要在自己的布局中include即可<br>
      * &emsp;&emsp;也可以针对这两个布局做根据自己的需求做适当的修改
      *
      * @param context   应用上下文
-     * @param viewGroup 轮播点控件布局
-     * @param viewPager 轮播图控件布局
+     * @param viewGroup 轮播点控件布局,可以为null.
+     * @param viewPager 轮播图控件布局,不能为null.
      */
     public BannerView(Context context, ViewGroup viewGroup,
                       ViewPager viewPager) {
@@ -138,9 +153,13 @@ public class BannerView {
             mViewGroup = (ViewGroup) mRootView.findViewById(mViewGroupId);
             mViewPager = (ViewPager) mRootView.findViewById(mViewPagerId);
         }
-        mViewGroup.removeAllViews();
-        mViewPager.removeAllViews();
-
+        /*mViewGroup 可以为空*/
+        if (mViewGroup != null) {
+            mViewGroup.removeAllViews();
+        }else{
+            mIsDot = false;// mViewGroup 为空,则隐藏轮播点
+        }
+        mViewPager.removeAllViews();// 当mViewPager为空则抛出异常
         /**
          * VIEWPAGER页面的资源文件获取方式,由用户自定义资源文件
          * */
@@ -152,25 +171,11 @@ public class BannerView {
             mPageViews.addAll(getPageView());
         }
 
-        /**
-         * 代码健壮性<br>
-         * 也可以统一通过 throws Exception 来处理各种无法预计的异常
-         * */
-        // if (mGroup == null) {
-        // return;
-        // } else if (viewPager == null) {
-        // return;
-        // } else if (pageViews == null) {
-        // return;
-        // } else if (context == null) {
-        // return;
-        // }
-
         // 将小圆点加入到ViewGroup中
         mDot = new ImageView[mViewSize];
         for (int i = 0; i < mDot.length; i++) {
             // 设置了无圆点图，则直接跳过
-            if (!mIsDot) {
+            if (!mIsDot){
                 break;
             }
             ImageView imageView = new ImageView(mContext);
@@ -746,10 +751,11 @@ public class BannerView {
         int widthPx = getWindowsWidth();
         //实例布局参数
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, widthPx /scale);
+                LinearLayout.LayoutParams.MATCH_PARENT, widthPx / scale);
         //设置布局参数
         flyt_container.setLayoutParams(params);
     }
+
     /**
      * 设置轮播图的宽高比；
      * 注：margindp，是轮播图布局的左右外边距（或者内边距）的和，且默认是左右对称的.
@@ -758,14 +764,14 @@ public class BannerView {
      * @param scale          轮播图的宽高比
      * @param margindp       轮播图布局容器的横向外/内边距总和
      */
-    public void setAspectRatio(View flyt_container, int scale,int margindp) {
+    public void setAspectRatio(View flyt_container, int scale, int margindp) {
         int marginPx = dip2px(margindp);
         //轮播图布局的实际宽度
         int widthPx = getWindowsWidth() - marginPx;
         //实例布局参数
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, widthPx /scale);
-        params.setMargins(marginPx/2,0,marginPx/2,0);
+                LinearLayout.LayoutParams.MATCH_PARENT, widthPx / scale);
+        params.setMargins(marginPx / 2, 0, marginPx / 2, 0);
         //设置布局参数
         flyt_container.setLayoutParams(params);
     }
@@ -780,10 +786,12 @@ public class BannerView {
 //		return dpValue * (metrics.densityDpi / 160f);
     }
 
-    /** 获取屏幕宽度 */
+    /**
+     * 获取屏幕宽度
+     */
     private int getWindowsWidth() {
         DisplayMetrics dm = new DisplayMetrics();
-        ((Activity)mContext).getWindowManager().getDefaultDisplay().getMetrics(dm);
+        ((Activity) mContext).getWindowManager().getDefaultDisplay().getMetrics(dm);
         return dm.widthPixels;
     }
 
