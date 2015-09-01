@@ -69,7 +69,11 @@ public class CustomLtFragment extends FragmentActivity {
             public List<Object> setPageView() {
                 List<Object> views = new ArrayList<Object>();
                 for (int i = 0; i < 4; i++) {
-                    views.add(new CustomLtFragmentItem(i + 1 + ""));
+                    CustomLtFragmentItem customLtFragmentItem = new CustomLtFragmentItem();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("content",i+1+"");
+                    customLtFragmentItem.setArguments(bundle);
+                    views.add(customLtFragmentItem);
                 }
                 return views;
             }

@@ -307,15 +307,13 @@ public class BannerView {
         // 判断是否由对象生成界面
         @Override
         public boolean isViewFromObject(View arg0, Object arg1) {
-            /**
-             * 首次适配时，及时监听 这里可以不需要
-             */
-            // if (ibCurrentPageListener == null) {
-            // // 默认执行的事件
-            // } else {// 用户自定义执行的事件
-            // ibCurrentPageListener.setCurrentPageEvent(
-            // pageViews.get(positioncur), positioncur % vSize);
-            // }
+            /** 首次适配时，及时监听 */
+            if (mIbCurrentPageListener == null) {
+                // 默认执行的事件
+            } else {// 用户自定义执行的事件
+                mIbCurrentPageListener.setCurrentPageEvent(arg1, mPositioncur
+                        % mViewSize);
+            }
 
             /** 如果设置了自动轮播并且线程处于关闭状态，执行开启 */
             if (mIsAutoPlay && !mIsRunning) {
