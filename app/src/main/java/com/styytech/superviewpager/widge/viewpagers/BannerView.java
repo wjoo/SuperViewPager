@@ -403,12 +403,6 @@ public class BannerView {
             if (mIbCurrentPageListener == null) {
                 // 默认执行的事件
             } else {// 用户自定义执行的事件
-                // Fragment fragment = (Fragment)object;
-                // if(fragment.getView() != null){
-                // mIbCurrentPageListener.setCurrentPageEvent(object,
-                // mPositioncur
-                // % mViewSize);
-                // }
                 mIbCurrentPageListener.setCurrentPageEvent(object, mPositioncur
                         % mViewSize);
             }
