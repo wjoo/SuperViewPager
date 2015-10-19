@@ -15,7 +15,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -57,6 +56,7 @@ public class BannerView {
     private boolean mIsRunning = false;
     private boolean mIsAuto = false;// 默认没有设置自动
     private boolean mIsFinishUpdate = false;// 默认没有更新界面完毕
+    private boolean mIsFirst = true;//是否第一次启动线程
 
     /**
      * 标识适配哪种适配器,用于自动轮播时下标定位<br>
@@ -109,28 +109,13 @@ public class BannerView {
 
     /**
      * 实例化一个轮播视图实例 <br>
-     * 其中viewPagerId在此被初始化<br>
-     * 注：fragment_banner.xml,fragment_guide.xml 用户需要在自己的布局中include即可<br>
-     * &emsp;&emsp;也可以针对这两个布局做根据自己的需求做适当的修改
-     *
-     * @param context     应用上下文
-     * @param viewPagerId 轮播图控件布局id
-     */
-    public BannerView(Context context, View rootView, int viewPagerId) {
-        this.mContext = context;
-        this.mRootView = rootView;
-        this.mViewPagerId = viewPagerId;
-    }
-
-    /**
-     * 实例化一个轮播视图实例 <br>
      * 其中viewGroup,viewPager在外面初始化<br>
      * 注：fragment_banner.xml,fragment_guide.xml 用户需要在自己的布局中include即可<br>
      * &emsp;&emsp;也可以针对这两个布局做根据自己的需求做适当的修改
      *
      * @param context   应用上下文
-     * @param viewGroup 轮播点控件布局,可以为null.
-     * @param viewPager 轮播图控件布局,不能为null.
+     * @param viewGroup 轮播点控件布局
+     * @param viewPager 轮播图控件布局
      */
     public BannerView(Context context, ViewGroup viewGroup,
                       ViewPager viewPager) {
@@ -148,18 +133,13 @@ public class BannerView {
      * 出现异常，注意系统日志 Tag = System.err
      */
     public void displayViewPager() throws Exception {
-
         if (mRootView != null) {
             mViewGroup = (ViewGroup) mRootView.findViewById(mViewGroupId);
             mViewPager = (ViewPager) mRootView.findViewById(mViewPagerId);
         }
-        /*mViewGroup 可以为空*/
-        if (mViewGroup != null) {
-            mViewGroup.removeAllViews();
-        }else{
-            mIsDot = false;// mViewGroup 为空,则隐藏轮播点
-        }
-        mViewPager.removeAllViews();// 当mViewPager为空则抛出异常
+        mViewGroup.removeAllViews();
+        mViewPager.removeAllViews();
+
         /**
          * VIEWPAGER页面的资源文件获取方式,由用户自定义资源文件
          * */
@@ -167,15 +147,30 @@ public class BannerView {
         mViewSize = mPageViews.size();
         if (mViewSize == 1) {// 一张轮播图则默认不循环
             mIsLoop = false;
+            mIsDot = false;
         } else if (mIsLoop && mViewSize < 4) {// 循环且少于4张则重复添加张数
             mPageViews.addAll(getPageView());
         }
+
+        /**
+         * 代码健壮性<br>
+         * 也可以统一通过 throws Exception 来处理各种无法预计的异常
+         * */
+        // if (mGroup == null) {
+        // return;
+        // } else if (viewPager == null) {
+        // return;
+        // } else if (pageViews == null) {
+        // return;
+        // } else if (context == null) {
+        // return;
+        // }
 
         // 将小圆点加入到ViewGroup中
         mDot = new ImageView[mViewSize];
         for (int i = 0; i < mDot.length; i++) {
             // 设置了无圆点图，则直接跳过
-            if (!mIsDot){
+            if (!mIsDot) {
                 break;
             }
             ImageView imageView = new ImageView(mContext);
@@ -218,7 +213,12 @@ public class BannerView {
             // 设置ViewPager的默认项, 设置为长度的100倍，这样子开始就能往左滑动
             mCurrentItem = mPageViews.size() * 100;
             mViewPager.setCurrentItem(mCurrentItem);
-            startPlay();
+            if (mIsFirst) {
+                startPlay();
+            } else {
+                mCurrentItem = mCurrentItem + mPageViews.size();
+                handler.sendEmptyMessage(1);
+            }
         } else if (mIsLoop) {
             // 设置ViewPager的默认项, 设置为长度的100倍，这样子开始就能往左滑动
             mCurrentItem = mPageViews.size() * 100;
@@ -314,7 +314,6 @@ public class BannerView {
                 mIbCurrentPageListener.setCurrentPageEvent(arg1, mPositioncur
                         % mViewSize);
             }
-
             /** 如果设置了自动轮播并且线程处于关闭状态，执行开启 */
             if (mIsAutoPlay && !mIsRunning) {
                 startPlay();
@@ -403,6 +402,12 @@ public class BannerView {
             if (mIbCurrentPageListener == null) {
                 // 默认执行的事件
             } else {// 用户自定义执行的事件
+                // Fragment fragment = (Fragment)object;
+                // if(fragment.getView() != null){
+                // mIbCurrentPageListener.setCurrentPageEvent(object,
+                // mPositioncur
+                // % mViewSize);
+                // }
                 mIbCurrentPageListener.setCurrentPageEvent(object, mPositioncur
                         % mViewSize);
             }
@@ -456,8 +461,6 @@ public class BannerView {
                     break;
                 case 0:
                     mCurrentItem = mViewPager.getCurrentItem();
-                    // Log.i("123", "onPageScrollStateChanged_mCurrentItem:"
-                    // + mCurrentItem);
                     break;
             }
         }
@@ -528,6 +531,7 @@ public class BannerView {
 
     private void startPlay() {
         mIsRunning = true;
+        mIsFirst = false;
         new Thread(new SlideShowTask()).start();
     }
 
@@ -555,7 +559,6 @@ public class BannerView {
             }
             boolean isFirst = true;
             while (mIsRunning) {
-                // Log.i("123", "isRuning");
                 if (!mIsFinishUpdate) {// 如果没有更新界面完毕，或者后台进程运行则结束进程
                     mIsRunning = false;
                     break;
@@ -738,12 +741,12 @@ public class BannerView {
      * @param flyt_container 轮播布局容器
      * @param scale          轮播图的宽高比
      */
-    public void setAspectRatio(View flyt_container, int scale) {
+    public void setAspectRatio(View flyt_container, float scale) {
         //获取屏幕宽度
         int widthPx = getWindowsWidth();
         //实例布局参数
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, widthPx / scale);
+                LinearLayout.LayoutParams.MATCH_PARENT, (int) (widthPx / scale));
         //设置布局参数
         flyt_container.setLayoutParams(params);
     }
@@ -756,13 +759,13 @@ public class BannerView {
      * @param scale          轮播图的宽高比
      * @param margindp       轮播图布局容器的横向外/内边距总和
      */
-    public void setAspectRatio(View flyt_container, int scale, int margindp) {
+    public void setAspectRatio(View flyt_container, float scale, int margindp) {
         int marginPx = dip2px(margindp);
         //轮播图布局的实际宽度
         int widthPx = getWindowsWidth() - marginPx;
         //实例布局参数
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, widthPx / scale);
+                LinearLayout.LayoutParams.MATCH_PARENT, (int) (widthPx / scale));
         params.setMargins(marginPx / 2, 0, marginPx / 2, 0);
         //设置布局参数
         flyt_container.setLayoutParams(params);
@@ -905,5 +908,4 @@ public class BannerView {
             Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
         }
     }
-
 }

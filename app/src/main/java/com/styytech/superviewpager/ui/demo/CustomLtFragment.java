@@ -1,8 +1,5 @@
 package com.styytech.superviewpager.ui.demo;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,13 +8,15 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.styytech.superviewpager.R;
 import com.styytech.superviewpager.widge.viewpagers.BannerView;
 import com.styytech.superviewpager.widge.viewpagers.BannerView.IBViewCurrentPageListener;
 import com.styytech.superviewpager.widge.viewpagers.BannerView.IBViewSetPageView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 描述：自定义布局轮播界面DEMO
@@ -48,6 +47,7 @@ public class CustomLtFragment extends FragmentActivity {
     }
 
     private void setBannerView(BannerView bannerView) {
+        bannerView.setAutoPlay(true);
         // 是否需要小圆点
         bannerView.setDot(true);
         // 设置小圆点的外边距参数 默认(3,0,3,0)
